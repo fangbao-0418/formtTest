@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/jquery.js"></script>
+	</head>
+	<body>
+		<from method="post" action="" enctype = "multipart/form-data"></from>
+		<input type="file" name="file" id="file"/>
+		<div id="img"></div>
+		<button onclick="getFileInfo()">获取上传信息</button>
+		<script>
+			function getFileInfo () {
+				var file = document.getElementById('file').files;
+				var params = new FormData();
+				console.log(file)
+				
+				// 获取本地文件src地址
+				var img = new Image();
+				var src = window.URL.createObjectURL(file[0]);
+				console.log(src, 'src');
+				img.setAttribute('width', '300px');
+				img.src = src;
+				$('#img').append(img);
+				
+				
+				params.append('file', file[0]);
+				params.append('a', 'b');
+				// console.log(params)
+				$.ajax({
+					url: 'http://120.24.214.233/file.php',
+					type: 'post',
+					dataType: 'JSON',  
+		            // cache: false,  
+		            processData: false, // 默认是true ajax 独有的把参数序列化 (把对象处理成width=1680&height=1050 这样的字符串)
+		            // contentType: "multipart/form-data", // application/x-www-form-urlencoded
+					data: params,
+					contentType: false,
+				}).then(function (res) {
+					console.log(res)
+				})
+			}
+			
+			 function html5Reader(file){
+			     var file = file.files[0];
+			     var reader = new FileReader();
+			     reader.readAsDataURL(file);
+			     reader.onload = function(e){
+			         
+			         // var pic = document.getElementById("preview");
+			         // pic.src=this.result;
+			     }
+			 }
+		</script>
+	</body>
+</html>
